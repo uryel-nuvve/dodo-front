@@ -5,6 +5,10 @@ function App() {
   const [status, setStatus] = useState<'checking' | 'connected' | 'offline'>('checking')
   const [dbStatus, setDbStatus] = useState<'checking' | 'connected' | 'disconnected'>('checking')
   const [dbDetails, setDbDetails] = useState<string | null>(null)
+  
+  const [simulatingFailure, setSimulatingFailure] = useState(false)
+  const [actionLoading, setActionLoading] = useState(false)
+
   const [backendUrl, setBackendUrl] = useState<string>(() => {
     return localStorage.getItem('backendUrl') || 'http://localhost:3000'
   })
@@ -42,6 +46,19 @@ function App() {
     setStatus('checking')
   }
 
+  const toggleFailure = async (fail: boolean) => {
+    setActionLoading(true)
+    try {
+      const endpoint = fail ? '/api/simulate-failure' : '/api/recover-failure'
+      await fetch(`${backendUrl}${endpoint}`)
+      setSimulatingFailure(fail)
+    } catch (error) {
+      alert("Erro ao tentar contatar o backend")
+    } finally {
+      setActionLoading(false)
+    }
+  }
+
   return (
     <div className="container">
       <div className="panel">
@@ -61,7 +78,7 @@ function App() {
           <div className="status-item">
             <div className="status-info">
               <h3>API do Backend</h3>
-              <p>Serviço principal</p>
+              <p>Serviço principal (/api/status)</p>
             </div>
             <div className={`status-badge badge-${status}`}>
               {status === 'checking' && 'Verificando'}
@@ -89,6 +106,26 @@ function App() {
           </div>
         )}
 
+        <hr className="divider" />
+
+        <div className="actions-section">
+          <div className="button-group">
+            <button 
+              className="btn btn-danger" 
+              onClick={() => toggleFailure(true)}
+              disabled={simulatingFailure || actionLoading || status === 'offline'}
+            >
+              Simular Falha (500)
+            </button>
+            <button 
+              className="btn btn-success" 
+              onClick={() => toggleFailure(false)}
+              disabled={!simulatingFailure || actionLoading || status === 'offline'}
+            >
+              Recuperar (200)
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   )

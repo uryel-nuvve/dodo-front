@@ -119,3 +119,65 @@
   color: #fca5a5;
   word-break: break-all;
 }
+
+.divider {
+  border: 0;
+  height: 1px;
+  background: #374151;
+  margin: 24px 0;
+}
+
+.actions-section h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: #e5e7eb;
+}
+
+.actions-section p {
+  margin: 0 0 16px 0;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.actions-section code {
+  background: #111827;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #374151;
+  color: #d1d5db;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn:not(:disabled):hover {
+  opacity: 0.9;
+}
+
+.btn-danger {
+  background-color: #dc2626;
+  color: white;
+}
+
+.btn-success {
+  background-color: #059669;
+  color: white;
+}
